@@ -27,12 +27,22 @@ public class MiLista implements ListInterface{
 
     @Override
     public Object getHead() {
-        return null;
+
+        return this.cabeza.dato;
     }
 
     @Override
     public Object getTail() {
-        return null;
+        if (isEmpty()) {//0 si head==null
+            return null;
+
+        }
+            ListNode tail = this.cabeza;
+            //ciclo
+            while (tail.siguiente !=null){
+                tail=tail.siguiente;
+        }
+            return tail.dato;
     }
 
     @Override
