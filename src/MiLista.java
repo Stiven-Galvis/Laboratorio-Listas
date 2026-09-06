@@ -1,6 +1,6 @@
 import java.util.Iterator;
 
-public class MiLista implements ListInterface{
+public class MiLista implements ListInterface {
     ListNode cabeza;
 
     @Override
@@ -12,7 +12,7 @@ public class MiLista implements ListInterface{
     public int getSize() {
         ListNode iterador = this.cabeza;
         int contador = 1;
-        while (iterador.siguiente != null){
+        while (iterador.siguiente != null) {
             iterador = iterador.siguiente;
             contador = contador + 1;
         }
@@ -37,36 +37,77 @@ public class MiLista implements ListInterface{
             return null;
 
         }
-            ListNode tail = this.cabeza;
-            //ciclo
-            while (tail.siguiente !=null){
-                tail=tail.siguiente;
+        ListNode tail = this.cabeza;
+        //ciclo
+        while (tail.siguiente != null) {
+            tail = tail.siguiente;
         }
-            return tail.dato;
+        return tail.dato;
     }
 
     @Override
     public Object get(ListNode node) {
-        return null;
+        if (node == null) {
+            return null;
+        }
+        return node.dato;
     }
 
     @Override
     public Object search(Object object) {
+        if (isEmpty() || object == null) {
+            return null;
+        }
+
+        ListNode actual = this.cabeza;
+        while (actual != null) {
+            if (actual.dato != null && actual.dato.equals(object)) {
+                return actual.dato;
+            }
+            actual = actual.siguiente;
+        }
+
         return null;
     }
 
     @Override
     public boolean add(Object object) {
-        return false;
+        ListNode nuevo = new ListNode(object);
+        if (isEmpty()) {
+            this.cabeza = nuevo;
+        } else {
+            ListNode actual = this.cabeza;
+            while (actual.siguiente != null) {
+                actual = actual.siguiente;
+            }
+            actual.siguiente = nuevo;
+        }
+        return true;
     }
 
     @Override
     public boolean insert(ListNode node, Object object) {
-        return false;
+        if (node == null) {
+            return false;
+        }
+        ListNode nuevo = new ListNode(object);
+        nuevo.siguiente = node.siguiente;
+        node.siguiente = nuevo;
+        return true;
     }
 
     @Override
     public boolean insert(Object ob, Object object) {
+        if (isEmpty() || ob == null) {
+            return false;
+        }
+        ListNode actual = this.cabeza;
+        while (actual != null) {
+            if (actual.dato != null && actual.dato.equals(ob)) {
+                return insert(actual, object);
+            }
+            actual = actual.siguiente;
+        }
         return false;
     }
 
@@ -80,7 +121,7 @@ public class MiLista implements ListInterface{
             //3er paso: redefinir la cabeza
             this.cabeza = nuevaCabeza;
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Ocurrió un error");
             return false;
         }
@@ -88,10 +129,10 @@ public class MiLista implements ListInterface{
 
     @Override
     public boolean insertTail(Object object) {
-        if(this.cabeza == null){
+        if (this.cabeza == null) {
             ListNode nuevaCabeza = new ListNode(object);
             this.cabeza = nuevaCabeza;
-        }else {
+        } else {
             ListNode nuevaCola = new ListNode(object);
             ListNode iterador = this.cabeza;
             while (iterador.siguiente != null) {
@@ -106,68 +147,217 @@ public class MiLista implements ListInterface{
 
     @Override
     public boolean set(ListNode node, Object object) {
-        return false;
+        if (node == null) {
+            return false;
+        }
+        node.dato = object;
+        return true;
     }
 
     @Override
     public boolean remove(ListNode node) {
+        if (isEmpty() || node == null) {
+            return false;
+        }
+
+        if (this.cabeza == node) {
+            this.cabeza = this.cabeza.siguiente;
+            return true;
+        }
+
+        ListNode actual = this.cabeza;
+        while (actual.siguiente != null) {
+            if (actual.siguiente == node) {
+                actual.siguiente = node.siguiente;
+                return true;
+            }
+            actual = actual.siguiente;
+        }
+
         return false;
     }
 
     @Override
     public boolean contains(Object object) {
+        if (isEmpty() || object == null) {
+            return false;
+        }
+
+        ListNode actual = this.cabeza;
+        while (actual != null) {
+            if (actual.dato != null && actual.dato.equals(object)) {
+                return true;
+            }
+            actual = actual.siguiente;
+        }
+
         return false;
     }
 
     @Override
     public Iterator<ListNode> iterator() {
-        return null;
+        return new Iterator<ListNode>() {
+            private ListNode actual = cabeza;
+
+            @Override
+            public boolean hasNext() {
+                return actual != null;
+            }
+
+            @Override
+            public ListNode next() {
+                if (!hasNext()) {
+                    throw new java.util.NoSuchElementException();
+                }
+                ListNode nodoActual = actual;
+                actual = actual.siguiente;
+                return nodoActual;
+            }
+        };
     }
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        int tamano = 0;
+        ListNode actual = this.cabeza;
+        while (actual != null) {
+            tamano++;
+            actual = actual.siguiente;
+        }
+
+        Object[] arreglo = new Object[tamano];
+        actual = this.cabeza;
+        int i = 0;
+        while (actual != null) {
+            arreglo[i++] = actual.dato;
+            actual = actual.siguiente;
+        }
+
+        return arreglo;
     }
 
     @Override
     public Object[] toArray(Object[] object) {
-        return new Object[0];
+        Object[] arregloDatos = toArray();
+        if (object.length < arregloDatos.length) {
+            return arregloDatos;
+        }
+
+        System.arraycopy(arregloDatos, 0, object, 0, arregloDatos.length);
+        if (object.length > arregloDatos.length) {
+            object[arregloDatos.length] = null;
+        }
+
+        return object;
     }
 
     @Override
     public Object getBeforeTo() {
-        return null;
+        if (isEmpty() || this.cabeza.siguiente == null) {
+            return null;
+        }
+
+        ListNode actual = this.cabeza;
+        while (actual.siguiente != null && actual.siguiente.siguiente != null) {
+            actual = actual.siguiente;
+        }
+        return actual.dato;
     }
 
     @Override
     public Object getBeforeTo(ListNode node) {
+        if (isEmpty() || node == null || node == this.cabeza) {
+            return null;
+        }
+
+        ListNode actual = this.cabeza;
+        while (actual != null && actual.siguiente != null) {
+            if (actual.siguiente == node) {
+                return actual.dato;
+            }
+            actual = actual.siguiente;
+        }
         return null;
     }
 
     @Override
     public Object getNextTo() {
-        return null;
+        if (isEmpty() || this.cabeza.siguiente == null) {
+            return null;
+        }
+        return this.cabeza.siguiente.dato;
     }
 
     @Override
     public Object getNextTo(ListNode node) {
-        return null;
+        if (node == null || node.siguiente == null) {
+            return null;
+        }
+        return node.siguiente.dato;
     }
 
     @Override
     public MiLista subList(ListNode from, ListNode to) {
-        return null;
+        MiLista sub = new MiLista();
+        if (isEmpty() || from == null) {
+            return sub;
+        }
+
+        ListNode actual = from;
+        while (actual != null) {
+            sub.add(actual.dato);
+            if (actual == to) {
+                break;
+            }
+            actual = actual.siguiente;
+        }
+        return sub;
     }
 
     @Override
     public MiLista sortList() {
-        return null;
+        if (isEmpty()) {
+            return this;
+        }
+
+        Object[] arreglo = toArray();
+
+        int[] arregloInt = new int[arreglo.length];
+        for (int i = 0; i < arreglo.length; i++) {
+            if (arreglo[i] instanceof Integer) {
+                arregloInt[i] = (Integer) arreglo[i];
+            }
+        }
+
+        java.util.Arrays.sort(arregloInt);
+
+        MiLista listaOrdenada = new MiLista();
+        for (int val : arregloInt) {
+            listaOrdenada.add(val);
+        }
+
+        return listaOrdenada;
     }
 
     @Override
     public String toString() {
-        return "MiLista{" +
-                "cabeza=" + cabeza +
-                '}';
+        if (isEmpty()) {
+            return "MiLista[]";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("MiLista[");
+        ListNode actual = this.cabeza;
+
+        while (actual != null) {
+            sb.append(actual.dato);
+            if (actual.siguiente != null) {
+                sb.append(", ");
+            }
+            actual = actual.siguiente;
+        }
+
+        sb.append("]");
+        return sb.toString();
     }
 }
