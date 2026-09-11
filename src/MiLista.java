@@ -70,6 +70,22 @@ public class MiLista implements ListInterface {
         return null;
     }
 
+    public ListNode searchN(Object object) {
+        if (isEmpty() || object == null) {
+            return null;
+        }
+
+        ListNode actual = this.cabeza;
+        while (actual != null) {
+            if (actual.dato != null && actual.dato.equals(object)) {
+                return actual;
+            }
+            actual = actual.siguiente;
+        }
+
+        return null;
+    }
+
     @Override
     public boolean add(Object object) {
         ListNode nuevo = new ListNode(object);
@@ -114,11 +130,8 @@ public class MiLista implements ListInterface {
     @Override
     public boolean insertHead(Object object) {
         try {
-            // 1er paso: Crear el nuevo nodo con la información recibida
             ListNode nuevaCabeza = new ListNode(object);
-            //2do paso: Conectar el nodo a la cabeza
             nuevaCabeza.siguiente = this.cabeza;
-            //3er paso: redefinir la cabeza
             this.cabeza = nuevaCabeza;
             return true;
         } catch (Exception e) {

@@ -1,27 +1,29 @@
 
-void main() {
-    MiLista miLista = new MiLista();
-    System.out.println(miLista.toString());
+public class Main {
+    void main() {
+        MiLista miLista = new MiLista();
+        System.out.println(miLista.toString());
 
-    miLista.insertHead(0);
-
-//    System.out.println(miLista.toString());
-    miLista.insertHead("Juan");
-    miLista.insertHead(true);
+        miLista.insertHead(0);
 
 //    System.out.println(miLista.toString());
+        miLista.insertHead("Juan");
+        miLista.insertHead(true);
 
-    miLista.insertTail("Angela");
+//    System.out.println(miLista.toString());
 
-    System.out.println(miLista.toString());
-    System.out.println(miLista.getSize());
+        miLista.insertTail("Angela");
 
-    miLista.clear();
+        System.out.println(miLista.toString());
+        System.out.println(miLista.getSize());
 
-    System.out.println(miLista.toString());
+        miLista.clear();
 
-    miLista.insertTail(5);
-    System.out.println(miLista.toString());
-    miLista.getSize();
-    System.out.println(miLista.getSize());
+        System.out.println(miLista.toString());
+
+        miLista.insertTail(5);
+        System.out.println(miLista.toString());
+        miLista.getSize();
+        System.out.println(miLista.getSize());
+    }
 }
