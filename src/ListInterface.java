@@ -38,7 +38,7 @@ public interface ListInterface {
      */
     public boolean contains(Object object);
 
-    public Iterator<ListNode> iterator();
+    //public Iterator<ListNode> iterator();
 
     public Object[] toArray();
 
@@ -46,11 +46,11 @@ public interface ListInterface {
 
     public Object getBeforeTo();
 
-    public Object getBeforeTo(ListNode node);
+   // public Object getBeforeTo(ListNode node);
 
     public Object getNextTo();
 
-    public Object getNextTo(ListNode node);
+   // public Object getNextTo(ListNode node);
 
     public MiLista subList(ListNode from, ListNode to);
 

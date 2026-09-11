@@ -193,29 +193,6 @@ public class MiLista implements ListInterface {
 
         return false;
     }
-
-    @Override
-    public Iterator<ListNode> iterator() {
-        return new Iterator<ListNode>() {
-            private ListNode actual = cabeza;
-
-            @Override
-            public boolean hasNext() {
-                return actual != null;
-            }
-
-            @Override
-            public ListNode next() {
-                if (!hasNext()) {
-                    throw new java.util.NoSuchElementException();
-                }
-                ListNode nodoActual = actual;
-                actual = actual.siguiente;
-                return nodoActual;
-            }
-        };
-    }
-
     @Override
     public Object[] toArray() {
         int tamano = 0;
@@ -263,23 +240,6 @@ public class MiLista implements ListInterface {
         }
         return actual.dato;
     }
-
-    @Override
-    public Object getBeforeTo(ListNode node) {
-        if (isEmpty() || node == null || node == this.cabeza) {
-            return null;
-        }
-
-        ListNode actual = this.cabeza;
-        while (actual != null && actual.siguiente != null) {
-            if (actual.siguiente == node) {
-                return actual.dato;
-            }
-            actual = actual.siguiente;
-        }
-        return null;
-    }
-
     @Override
     public Object getNextTo() {
         if (isEmpty() || this.cabeza.siguiente == null) {
@@ -287,15 +247,6 @@ public class MiLista implements ListInterface {
         }
         return this.cabeza.siguiente.dato;
     }
-
-    @Override
-    public Object getNextTo(ListNode node) {
-        if (node == null || node.siguiente == null) {
-            return null;
-        }
-        return node.siguiente.dato;
-    }
-
     @Override
     public MiLista subList(ListNode from, ListNode to) {
         MiLista sub = new MiLista();
